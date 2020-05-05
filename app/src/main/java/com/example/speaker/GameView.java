@@ -102,7 +102,7 @@ public class GameView extends View{
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawARGB(250, 180, 180, 180);
+        canvas.drawARGB(250, 0, 0, 0);
          Paint p = new Paint();
          p.setAntiAlias(true);
          p.setTextSize(55.0f);    
@@ -142,6 +142,19 @@ public class GameView extends View{
         else if (player.getX() <= 0) {
             player.setX(0);
             player.setVx(0);
+        }
+
+        if (target.getY() + target.getFrameHeight() > viewHeight) {
+            target.setY(viewHeight - target.getFrameHeight());
+        }
+        else if (target.getY() <= 0) {
+            target.setY(0);
+        }
+        if (target.getX() + target.getFrameWidth() > viewWidth) {
+            target.setX(viewWidth - target.getFrameWidth());
+        }
+        else if (target.getX() <= 0) {
+            target.setX(0);
         }
 
         if (target.intersect(player)) {

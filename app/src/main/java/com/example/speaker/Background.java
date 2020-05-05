@@ -73,6 +73,10 @@ public class Background {
 
         VX = spritep.getVx();
         VY = spritep.getVy();
+            if(x < 0 && VX < 0){VX = 0; VY = 0;}
+            if(y < 0 && VY < 0){VY = 0; VX = 0;}
+            if(x+width > bitmap.getWidth() && VX > 0){VY = 0; VX = 0;}
+            if(y+height > bitmap.getHeight() && VY > 0){VY = 0; VX = 0;}
 
         x = x + VX * 0.05;
         y = y + VY * 0.05;
@@ -86,6 +90,11 @@ public class Background {
                 double moveY = spritep.getBoundingBoxRect().top - centeringY - this.height / 2;
                 VX = moveX / (Math.abs(moveX) + Math.abs(moveY)) * 500;
                 VY = moveY / (Math.abs(moveX) + Math.abs(moveY)) * 500;
+                if(x < 0 && VX < 0){VX = 0;}
+                if(y < 0 && VY < 0){VY = 0;}
+                if(x+width > bitmap.getWidth() && VX > 0){VX = 0;}
+                if(y+height > bitmap.getHeight() && VY > 0){VY = 0;}
+
                 x = x + VX * 0.05;
                 y = y + VY * 0.05;
                 spritep.setX(spritep.getX() + VX * -0.05);
