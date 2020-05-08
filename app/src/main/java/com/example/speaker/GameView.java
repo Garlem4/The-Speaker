@@ -12,10 +12,12 @@ import android.view.MotionEvent;
 import android.view.View;
 
 
+
 public class GameView extends View{
 
     private Sprite player;
     private Sprite target;
+    private Sprite npc;
     private Background background;
 
     private int viewWidth;
@@ -32,6 +34,7 @@ public class GameView extends View{
     private int playX;
     private int playY;
     private boolean onetime = true;
+    private boolean but = false;
 
     private final int timerInterval = 30;
 
@@ -86,7 +89,28 @@ public class GameView extends View{
         Timer t = new Timer();
         t.start();
 
-        b = BitmapFactory.decodeResource(getResources(), R.drawable.background);
+        b = BitmapFactory.decodeResource(getResources(), R.drawable.npc);
+        w = b.getWidth()/9;
+        h = b.getHeight()/1;
+
+        firstFrame = new Rect(0, 0, w, h);
+        npc = new Sprite(100, 500, 0, 0, firstFrame, b);
+
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (i == 0 && j == 0) {
+                    continue;
+                }
+                if (i == 3 && j == 8) {
+                    continue;
+                }
+                npc.addFrame(new Rect(j*w, i*h, j*w+w, i*h+h));
+            }
+        }
+
+
+
+        b = BitmapFactory.decodeResource(getResources(), R.drawable.bgv32);
         background = new Background(b);
     }
 
@@ -111,21 +135,31 @@ public class GameView extends View{
          background.draw(canvas,viewWidth,viewHeight);
 
         target.draw(canvas);
+        npc.draw(canvas);
         player.draw(canvas);
+
         if(onetime){
             target.setX(viewWidth/2-tarX/2);
             target.setY(viewHeight/2-tarY/2);
             player.setX(viewWidth/2-playX/2);
             player.setY(viewHeight/2-playY/2);
+            npc.setX(viewWidth/3);
+            npc.setY(viewHeight/5);
             onetime = false;
         }
-//        canvas.drawText(points + "", viewWidth - 200, 70, p);
+
+        if (but){
+            canvas.drawCircle(viewWidth/2,viewHeight-150,200, p);
+            p.setColor(Color.BLACK);
+            canvas.drawText("Speak!", viewWidth/2-80,viewHeight-150, p);
+        }
+
     }
 
     protected void update () {
         player.update(timerInterval);
         target.update(timerInterval);
-        background.update(player,target);
+        background.update(player,target,npc);
 
         if (player.getY() + player.getFrameHeight() > viewHeight) {
             player.setY(viewHeight - player.getFrameHeight());
@@ -163,6 +197,12 @@ public class GameView extends View{
                 player.setVx(0);
                 player.setVy(0);
                 player.stopAnimate();
+        }
+
+        if(player.toSpeak(npc)){
+            but = true;
+        }else{
+            but = false;
         }
         invalidate();
     }
@@ -211,8 +251,8 @@ public class GameView extends View{
                     player.setBitmap(b);
                 }
 
-                player.setVx(moveX/(Math.abs(moveX)+Math.abs(moveY))*500);
-                player.setVy(moveY/(Math.abs(moveX)+Math.abs(moveY))*500);
+                player.setVx(moveX/(Math.abs(moveX)+Math.abs(moveY))*200);
+                player.setVy(moveY/(Math.abs(moveX)+Math.abs(moveY))*200);
 
             }
         }

@@ -167,10 +167,10 @@ public class Sprite {
     }
 
     public Rect getBoundingBoxRect () {
-        return new Rect((int)x+padding,
-                (int)y+padding,
-                (int)(x + frameWidth - 2 *padding),
-                (int)(y + frameHeight - 2* padding));
+        return new Rect((int)x-5,
+                (int)y-5,
+                (int)(x + frameWidth + 5),
+                (int)(y + frameHeight + 5));
     }
 
     public Rect getBoundingInBoxRect () {
@@ -180,6 +180,10 @@ public class Sprite {
 
     public boolean intersect (Sprite s) {
         return getBoundingInBoxRect().intersect(s.getBoundingInBoxRect());
+    }
+
+    public boolean toSpeak (Sprite s) {
+        return getBoundingBoxRect().intersect(s.getBoundingBoxRect());
     }
 
     public boolean onCenter (int width, int height) {

@@ -66,9 +66,9 @@ public class Background {
 
         Rect frame = new Rect((int)x, (int)y, (int)Math.round(width+x), (int)Math.round(height+y));
 
-        canvas.drawBitmap(bitmap, frame, canvas.getClipBounds(),  p);
+        canvas.drawBitmap(bitmap, frame, canvas.getClipBounds(), p);
     }
-    public void update(Sprite spritep, Sprite spritet) {
+    public void update(Sprite spritep, Sprite spritet, Sprite npc) {
         if(spritep.getVx() != 0){
 
         VX = spritep.getVx();
@@ -82,6 +82,8 @@ public class Background {
         y = y + VY * 0.05;
         spritet.setVx(VX*-1.7);
         spritet.setVy(VY*-1.7);
+        npc.setX(npc.getX() + VX * -0.05);
+        npc.setY(npc.getY() + VY * -0.05);
         }else {
             if (!spritep.onCenter(this.width, this.height)) {
                 float centeringX = (spritep.getBoundingBoxRect().left - spritep.getBoundingBoxRect().right) / 2;
@@ -101,6 +103,8 @@ public class Background {
                 spritep.setY(spritep.getY() + VY * -0.05);
                 spritet.setX(spritet.getX() + VX * -0.05);
                 spritet.setY(spritet.getY() + VY * -0.05);
+                npc.setX(npc.getX() + VX * -0.05);
+                npc.setY(npc.getY() + VY * -0.05);
             }
         }
     }
