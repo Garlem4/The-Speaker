@@ -41,9 +41,9 @@ public class GameView extends View{
     public GameView(Context context) {
         super(context);
 
-        Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.warrior);
-        int w = b.getWidth()/6;
-        int h = b.getHeight()/1;
+        Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.mainman);
+        int w = b.getWidth()/4;
+        int h = b.getHeight()/3;
 
         playX = w;
         playY = h;
@@ -51,12 +51,12 @@ public class GameView extends View{
         Rect firstFrame = new Rect(0, 0, w, h);
         player = new Sprite(viewWidth/2, viewHeight/2, 0, 0, firstFrame, b);
 
-        for (int i = 0; i < 1; i++) {
-            for (int j = 0; j < 5; j++) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
                 if (i == 0 && j == 0) {
                     continue;
                 }
-                if (i == 3 && j == 4) {
+                if (i == 2 && j == 2) {
                     continue;
                 }
                 player.addFrame(new Rect(j*w, i*h, j*w+w, i*h+h));
@@ -94,14 +94,14 @@ public class GameView extends View{
         h = b.getHeight()/1;
 
         firstFrame = new Rect(0, 0, w, h);
-        npc = new Sprite(100, 500, 0, 0, firstFrame, b);
+        npc = new Sprite(530, 390, 0, 0, firstFrame, b);
 
         for (int i = 0; i < 1; i++) {
             for (int j = 0; j < 9; j++) {
                 if (i == 0 && j == 0) {
                     continue;
                 }
-                if (i == 3 && j == 8) {
+                if (i == 2 && j == 8) {
                     continue;
                 }
                 npc.addFrame(new Rect(j*w, i*h, j*w+w, i*h+h));
@@ -110,7 +110,7 @@ public class GameView extends View{
 
 
 
-        b = BitmapFactory.decodeResource(getResources(), R.drawable.bgv32);
+        b = BitmapFactory.decodeResource(getResources(), R.drawable.map);
         background = new Background(b);
     }
 
@@ -126,7 +126,7 @@ public class GameView extends View{
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawARGB(250, 0, 0, 0);
+        canvas.drawRGB(79, 144, 146);
          Paint p = new Paint();
          p.setAntiAlias(true);
          p.setTextSize(55.0f);    
@@ -143,8 +143,8 @@ public class GameView extends View{
             target.setY(viewHeight/2-tarY/2);
             player.setX(viewWidth/2-playX/2);
             player.setY(viewHeight/2-playY/2);
-            npc.setX(viewWidth/3);
-            npc.setY(viewHeight/5);
+            npc.setX(1400);
+            npc.setY(800);
             onetime = false;
         }
 
@@ -159,6 +159,7 @@ public class GameView extends View{
     protected void update () {
         player.update(timerInterval);
         target.update(timerInterval);
+//        npc.update(timerInterval);
         background.update(player,target,npc);
 
         if (player.getY() + player.getFrameHeight() > viewHeight) {
@@ -242,12 +243,12 @@ public class GameView extends View{
                 target.setY(event.getY()+centeringY);
 
                 if(event.getX() < player.getBoundingBoxRect().right){
-                    Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.warriorback);
+                    Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.mainmanback);
                     player.setBitmap(b);
                 }
 
                 if(event.getX() > player.getBoundingBoxRect().left){
-                    Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.warrior);
+                    Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.mainman);
                     player.setBitmap(b);
                 }
 
