@@ -19,6 +19,7 @@ public class GameView extends View{
     private Sprite target;
     private Sprite npc;
     private Background background;
+    private InitializeWalls walls;
 
     private int viewWidth;
     private int viewHeight;
@@ -112,7 +113,11 @@ public class GameView extends View{
 
         b = BitmapFactory.decodeResource(getResources(), R.drawable.map);
         background = new Background(b);
+
+        walls = new InitializeWalls("map1");
     }
+
+
 
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -138,6 +143,10 @@ public class GameView extends View{
         npc.draw(canvas);
         player.draw(canvas);
 
+//        for(Wall wall : walls.getListWall()){
+//        wall.draw(canvas);
+//        }
+
         if(onetime){
             target.setX(viewWidth/2-tarX/2);
             target.setY(viewHeight/2-tarY/2);
@@ -160,7 +169,7 @@ public class GameView extends View{
         player.update(timerInterval);
         target.update(timerInterval);
 //        npc.update(timerInterval);
-        background.update(player,target,npc);
+        background.update(player,target,npc,walls);
 
         if (player.getY() + player.getFrameHeight() > viewHeight) {
             player.setY(viewHeight - player.getFrameHeight());
@@ -198,6 +207,19 @@ public class GameView extends View{
                 player.setVx(0);
                 player.setVy(0);
                 player.stopAnimate();
+        }
+
+
+        for(Wall wall : walls.getListWall()){
+            if(wall.nearby(player)){
+                target.setVy(0);
+                target.setVx(0);
+                player.stopAnimate();
+                player.setX(player.getVx()*-0.25+player.getX());
+                player.setY(player.getVy()*-0.25+player.getY());
+                player.setVx(0);
+                player.setVy(0);
+            }
         }
 
         if(player.toSpeak(npc)){
@@ -251,9 +273,8 @@ public class GameView extends View{
                     Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.mainman);
                     player.setBitmap(b);
                 }
-
-                player.setVx(moveX/(Math.abs(moveX)+Math.abs(moveY))*200);
-                player.setVy(moveY/(Math.abs(moveX)+Math.abs(moveY))*200);
+                    player.setVx(moveX / (Math.abs(moveX) + Math.abs(moveY)) * 200);
+                    player.setVy(moveY / (Math.abs(moveX) + Math.abs(moveY)) * 200);
 
             }
         }

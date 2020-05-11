@@ -68,7 +68,7 @@ public class Background {
 
         canvas.drawBitmap(bitmap, frame, canvas.getClipBounds(), p);
     }
-    public void update(Sprite spritep, Sprite spritet, Sprite npc) {
+    public void update(Sprite spritep, Sprite spritet, Sprite npc, InitializeWalls walls) {
         if(spritep.getVx() != 0){
 
         VX = spritep.getVx();
@@ -84,6 +84,12 @@ public class Background {
         spritet.setVy(VY*-1.7);
         npc.setX(npc.getX() + VX * -0.05);
         npc.setY(npc.getY() + VY * -0.05);
+
+            for(Wall wall : walls.getListWall()) {
+                wall.setX(wall.getX() + VX * -0.05);
+                wall.setY(wall.getY() + VY * -0.05);
+            }
+
         }else {
             if (!spritep.onCenter(this.width, this.height)) {
                 float centeringX = (spritep.getBoundingBoxRect().left - spritep.getBoundingBoxRect().right) / 2;
@@ -105,6 +111,11 @@ public class Background {
                 spritet.setY(spritet.getY() + VY * -0.05);
                 npc.setX(npc.getX() + VX * -0.05);
                 npc.setY(npc.getY() + VY * -0.05);
+
+                for(Wall wall : walls.getListWall()) {
+                    wall.setX(wall.getX() + VX * -0.05);
+                    wall.setY(wall.getY() + VY * -0.05);
+                }
             }
         }
     }
