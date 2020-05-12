@@ -90,24 +90,24 @@ public class GameView extends View{
         Timer t = new Timer();
         t.start();
 
-        b = BitmapFactory.decodeResource(getResources(), R.drawable.npc);
-        w = b.getWidth()/9;
-        h = b.getHeight()/1;
-
-        firstFrame = new Rect(0, 0, w, h);
-        npc = new Sprite(530, 390, 0, 0, firstFrame, b);
-
-        for (int i = 0; i < 1; i++) {
-            for (int j = 0; j < 9; j++) {
-                if (i == 0 && j == 0) {
-                    continue;
-                }
-                if (i == 2 && j == 8) {
-                    continue;
-                }
-                npc.addFrame(new Rect(j*w, i*h, j*w+w, i*h+h));
-            }
-        }
+//        b = BitmapFactory.decodeResource(getResources(), R.drawable.npc);
+//        w = b.getWidth()/9;
+//        h = b.getHeight()/1;
+//
+//        firstFrame = new Rect(0, 0, w, h);
+//        npc = new Sprite(530, 390, 0, 0, firstFrame, b);
+//
+//        for (int i = 0; i < 1; i++) {
+//            for (int j = 0; j < 9; j++) {
+//                if (i == 0 && j == 0) {
+//                    continue;
+//                }
+//                if (i == 2 && j == 8) {
+//                    continue;
+//                }
+//                npc.addFrame(new Rect(j*w, i*h, j*w+w, i*h+h));
+//            }
+//        }
 
 
 
@@ -140,10 +140,10 @@ public class GameView extends View{
          background.draw(canvas,viewWidth,viewHeight);
 
         target.draw(canvas);
-        npc.draw(canvas);
+//        npc.draw(canvas);
         player.draw(canvas);
 
-//        for(Wall wall : walls.getListWall()){
+//        for(Wall wall : walls.getListWall()){ //show all the walls
 //        wall.draw(canvas);
 //        }
 
@@ -157,11 +157,11 @@ public class GameView extends View{
             onetime = false;
         }
 
-        if (but){
-            canvas.drawCircle(viewWidth/2,viewHeight-150,200, p);
-            p.setColor(Color.BLACK);
-            canvas.drawText("Speak!", viewWidth/2-80,viewHeight-150, p);
-        }
+//        if (but){
+//            canvas.drawCircle(viewWidth/2,viewHeight-150,200, p);
+//            p.setColor(Color.BLACK);
+//            canvas.drawText("Speak!", viewWidth/2-80,viewHeight-150, p);
+//        }
 
     }
 
@@ -222,11 +222,11 @@ public class GameView extends View{
             }
         }
 
-        if(player.toSpeak(npc)){
-            but = true;
-        }else{
-            but = false;
-        }
+//        if(player.toSpeak(npc)){
+//            but = true;
+//        }else{
+//            but = false;
+//        }
         invalidate();
     }
 
