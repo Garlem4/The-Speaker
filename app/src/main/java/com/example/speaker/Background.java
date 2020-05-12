@@ -43,6 +43,7 @@ public class Background {
     public void setVY(double VY) {
         this.VY = VY;
     }
+
     public Background(Bitmap bitmap){
         this.bitmap = bitmap;
         this.x = 0;
@@ -68,22 +69,22 @@ public class Background {
 
         canvas.drawBitmap(bitmap, frame, canvas.getClipBounds(), p);
     }
-    public void update(Sprite spritep, Sprite spritet, Sprite npc, InitializeWalls walls) {
+
+    public void update(Sprite spritep, Sprite spritet, InitializeWalls walls, InitializeNPC npc) {
         if(spritep.getVx() != 0){
 
         VX = spritep.getVx();
         VY = spritep.getVy();
-//            if(x < 0 && VX < 0){VX = 0; VY = 0;}
-//            if(y < 0 && VY < 0){VY = 0; VX = 0;}
-//            if(x+width > bitmap.getWidth() && VX > 0){VY = 0; VX = 0;}
-//            if(y+height > bitmap.getHeight() && VY > 0){VY = 0; VX = 0;}
 
         x = x + VX * 0.05;
         y = y + VY * 0.05;
         spritet.setVx(VX*-1.7);
         spritet.setVy(VY*-1.7);
-        npc.setX(npc.getX() + VX * -0.05);
-        npc.setY(npc.getY() + VY * -0.05);
+
+            for(NPC unit : npc.getListNPC()) {
+                unit.setX(unit.getX() + VX * -0.05);
+                unit.setY(unit.getY() + VY * -0.05);
+            }
 
             for(Wall wall : walls.getListWall()) {
                 wall.setX(wall.getX() + VX * -0.05);
@@ -98,19 +99,17 @@ public class Background {
                 double moveY = spritep.getBoundingBoxRect().top - centeringY - this.height / 2;
                 VX = moveX / (Math.abs(moveX) + Math.abs(moveY)) * 500;
                 VY = moveY / (Math.abs(moveX) + Math.abs(moveY)) * 500;
-//                if(x < 0 && VX < 0){VX = 0;}
-//                if(y < 0 && VY < 0){VY = 0;}
-//                if(x+width > bitmap.getWidth() && VX > 0){VX = 0;}
-//                if(y+height > bitmap.getHeight() && VY > 0){VY = 0;}
-
                 x = x + VX * 0.05;
                 y = y + VY * 0.05;
                 spritep.setX(spritep.getX() + VX * -0.05);
                 spritep.setY(spritep.getY() + VY * -0.05);
                 spritet.setX(spritet.getX() + VX * -0.05);
                 spritet.setY(spritet.getY() + VY * -0.05);
-                npc.setX(npc.getX() + VX * -0.05);
-                npc.setY(npc.getY() + VY * -0.05);
+
+                for(NPC unit : npc.getListNPC()) {
+                    unit.setX(unit.getX() + VX * -0.05);
+                    unit.setY(unit.getY() + VY * -0.05);
+                }
 
                 for(Wall wall : walls.getListWall()) {
                     wall.setX(wall.getX() + VX * -0.05);

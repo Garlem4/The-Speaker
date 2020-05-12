@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -17,7 +16,7 @@ public class GameView extends View{
 
     private Sprite player;
     private Sprite target;
-    private Sprite npc;
+    private InitializeNPC npc;
     private Background background;
     private InitializeWalls walls;
 
@@ -115,6 +114,8 @@ public class GameView extends View{
         background = new Background(b);
 
         walls = new InitializeWalls("map1");
+        npc = new InitializeNPC("map1", context);
+
     }
 
 
@@ -138,22 +139,24 @@ public class GameView extends View{
          p.setColor(Color.WHITE);
 
          background.draw(canvas,viewWidth,viewHeight);
+         target.draw(canvas);
 
-        target.draw(canvas);
-//        npc.draw(canvas);
-        player.draw(canvas);
 
 //        for(Wall wall : walls.getListWall()){ //show all the walls
 //        wall.draw(canvas);
 //        }
+
+        for(NPC unit : npc.getListNPC()){ //show all the npc
+        unit.draw(canvas);
+        }
+
+        player.draw(canvas);
 
         if(onetime){
             target.setX(viewWidth/2-tarX/2);
             target.setY(viewHeight/2-tarY/2);
             player.setX(viewWidth/2-playX/2);
             player.setY(viewHeight/2-playY/2);
-            npc.setX(1400);
-            npc.setY(800);
             onetime = false;
         }
 
@@ -168,8 +171,7 @@ public class GameView extends View{
     protected void update () {
         player.update(timerInterval);
         target.update(timerInterval);
-//        npc.update(timerInterval);
-        background.update(player,target,npc,walls);
+        background.update(player,target,walls,npc);
 
         if (player.getY() + player.getFrameHeight() > viewHeight) {
             player.setY(viewHeight - player.getFrameHeight());

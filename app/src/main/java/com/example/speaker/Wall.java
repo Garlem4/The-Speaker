@@ -20,14 +20,6 @@ public class Wall {
         return y; }
     public void setY(double y) {
         this.y = y; }
-    public int getWidth() {
-        return width; }
-    public void setWidth(int width) {
-        this.width = width; }
-    public int getHeight() {
-        return height; }
-    public void setHeight(int height) {
-        this.height = height; }
 
     public Wall(double x, double  y, int width , int height){
         this.height = height;
