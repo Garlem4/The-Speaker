@@ -22,10 +22,10 @@ public class Wall {
         this.y = y; }
 
     public Wall(double x, double  y, int width , int height){
-        this.height = height;
-        this.width = width;
-        this.x = x;
-        this.y = y;
+        this.height = (int)Math.round(height/1.3333);
+        this.width = (int)Math.round(width/1.3333);
+        this.x = x/1.3333;
+        this.y = y/1.3333;
     }
 
 

@@ -182,10 +182,6 @@ public class Sprite {
         return getBoundingInBoxRect().intersect(s.getBoundingInBoxRect());
     }
 
-//    public boolean toSpeak (Sprite s) {
-////        return getBoundingBoxRect().intersect(s.getBoundingBoxRect());
-////    }
-
     public boolean onCenter (int width, int height) {
         return getBoundingInBoxRect().intersect(
                 new Rect((int)(width/2-5),(int)(height/2-5),(int)(width/2+5),(int)(height/2+5))

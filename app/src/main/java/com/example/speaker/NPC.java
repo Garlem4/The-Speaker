@@ -1,6 +1,7 @@
 package com.example.speaker;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
@@ -14,6 +15,11 @@ public class NPC {
     private int width;
     private int height;
 
+    public boolean isSpeak() { return speak; }
+    public void setSpeak(boolean speak) { this.speak = speak; }
+
+    private boolean speak;
+
     public Bitmap getBitmap() {
         return bitmap; }
     public void setBitmap(Bitmap bitmap) {
@@ -26,19 +32,11 @@ public class NPC {
         return y; }
     public void setY(double y) {
         this.y = y; }
-    public int getWidth() {
-        return width; }
-    public void setWidth(int width) {
-        this.width = width; }
-    public int getHeight() {
-        return height; }
-    public void setHeight(int height) {
-        this.height = height; }
 
     public NPC(double x, double y, Bitmap bitmap){
         this.bitmap = bitmap;
-        this.x = x;
-        this.y = y;
+        this.x = x/1.334;
+        this.y = y/1.334;
         this.width = bitmap.getWidth();
         this.height = bitmap.getHeight();
     }

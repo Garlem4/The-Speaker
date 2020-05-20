@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -19,6 +20,8 @@ public class GameView extends View{
     private InitializeNPC npc;
     private Background background;
     private InitializeWalls walls;
+    private SpeakButton button;
+    private DialogWindow dialog;
 
     private int viewWidth;
     private int viewHeight;
@@ -34,7 +37,6 @@ public class GameView extends View{
     private int playX;
     private int playY;
     private boolean onetime = true;
-    private boolean but = false;
 
     private final int timerInterval = 30;
 
@@ -89,84 +91,65 @@ public class GameView extends View{
         Timer t = new Timer();
         t.start();
 
-//        b = BitmapFactory.decodeResource(getResources(), R.drawable.npc);
-//        w = b.getWidth()/9;
-//        h = b.getHeight()/1;
-//
-//        firstFrame = new Rect(0, 0, w, h);
-//        npc = new Sprite(530, 390, 0, 0, firstFrame, b);
-//
-//        for (int i = 0; i < 1; i++) {
-//            for (int j = 0; j < 9; j++) {
-//                if (i == 0 && j == 0) {
-//                    continue;
-//                }
-//                if (i == 2 && j == 8) {
-//                    continue;
-//                }
-//                npc.addFrame(new Rect(j*w, i*h, j*w+w, i*h+h));
-//            }
-//        }
-
-
 
         b = BitmapFactory.decodeResource(getResources(), R.drawable.map);
         background = new Background(b);
 
         walls = new InitializeWalls("map1");
         npc = new InitializeNPC("map1", context);
-
+        button = new SpeakButton();
+        dialog = new DialogWindow();
     }
 
 
 
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-
         viewWidth = w;
         viewHeight = h;
-
-
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawRGB(79, 144, 146);
-         Paint p = new Paint();
-         p.setAntiAlias(true);
-         p.setTextSize(55.0f);    
-         p.setColor(Color.WHITE);
+        Paint p = new Paint();
+        p.setAntiAlias(true);
+        p.setTextSize(55.0f);
+        p.setColor(Color.WHITE);
 
-         background.draw(canvas,viewWidth,viewHeight);
-         target.draw(canvas);
+        background.draw(canvas, viewWidth, viewHeight);
+        target.draw(canvas);
 
 
 //        for(Wall wall : walls.getListWall()){ //show all the walls
 //        wall.draw(canvas);
 //        }
 
-        for(NPC unit : npc.getListNPC()){ //show all the npc
-        unit.draw(canvas);
+        for (NPC unit : npc.getListNPC()) { //show all the npc
+            unit.draw(canvas);
         }
 
         player.draw(canvas);
 
-        if(onetime){
-            target.setX(viewWidth/2-tarX/2);
-            target.setY(viewHeight/2-tarY/2);
-            player.setX(viewWidth/2-playX/2);
-            player.setY(viewHeight/2-playY/2);
+        if (onetime) {
+            target.setX(viewWidth / 2 - tarX / 2);
+            target.setY(viewHeight / 2 - tarY / 2);
+            player.setX(viewWidth / 2 - playX / 2);
+            player.setY(viewHeight / 2 - playY / 2);
             onetime = false;
         }
 
-//        if (but){
-//            canvas.drawCircle(viewWidth/2,viewHeight-150,200, p);
-//            p.setColor(Color.BLACK);
-//            canvas.drawText("Speak!", viewWidth/2-80,viewHeight-150, p);
-//        }
-
+        for (NPC unit : npc.getListNPC()) {
+            if (unit.isSpeak()) {
+                button.draw(canvas,viewWidth,viewHeight);
+            }
+        }
+        if (button.isDialog()){
+            dialog.draw(canvas,viewWidth,viewHeight);
+        }
     }
+
 
     protected void update () {
         player.update(timerInterval);
@@ -224,11 +207,20 @@ public class GameView extends View{
             }
         }
 
-//        if(player.toSpeak(npc)){
-//            but = true;
-//        }else{
-//            but = false;
-//        }
+        button.setIt(false);
+
+        for(NPC unit: npc.getListNPC()){
+            if(unit.toSpeak(player)){
+                unit.setSpeak(true);
+                button.setIt(true);
+            }
+        }
+        for(NPC unit: npc.getListNPC()){
+            if(!unit.toSpeak(player)){
+                unit.setSpeak(false);
+            }
+        }
+
         invalidate();
     }
 
@@ -236,48 +228,57 @@ public class GameView extends View{
     public boolean onTouchEvent(MotionEvent event) {
 
         int eventAction = event.getAction();
-        if (eventAction == MotionEvent.ACTION_DOWN)  {
+        if (eventAction == MotionEvent.ACTION_DOWN) {
 
-            if(event.getY() > 0 && event.getX() > 0){
-                float centeringX = (player.getBoundingBoxRect().left - player.getBoundingBoxRect().right)/2;
-                float centeringY = (player.getBoundingBoxRect().top - player.getBoundingBoxRect().bottom)/2;
+            if (button.onClick(event)) {
+                button.setDialog(true);
+            } else {
 
-                moveX = event.getX() - player.getBoundingBoxRect().left + centeringX;
-                moveY = event.getY() - player.getBoundingBoxRect().top + centeringY;
+                if(!button.isDialog()) {
+                    if (event.getY() > 0 && event.getX() > 0) {
+                        float centeringX = (player.getBoundingBoxRect().left - player.getBoundingBoxRect().right) / 2;
+                        float centeringY = (player.getBoundingBoxRect().top - player.getBoundingBoxRect().bottom) / 2;
+
+                        moveX = event.getX() - player.getBoundingBoxRect().left + centeringX;
+                        moveY = event.getY() - player.getBoundingBoxRect().top + centeringY;
 
 
-                postX = player.getBoundingBoxRect().left + centeringX + moveX;
+                        postX = player.getBoundingBoxRect().left + centeringX + moveX;
 
-                if(postX > viewWidth-centeringX*2){
-                    postX -= centeringX;
+                        if (postX > viewWidth - centeringX * 2) {
+                            postX -= centeringX;
+                        }
+                        if (postX < 0 + centeringX * 2) {
+                            postX += centeringX;
+                        }
+
+                        postY = player.getBoundingBoxRect().top + centeringY + moveY;
+                        if (postY > viewWidth - centeringY * 2) {
+                            postY -= centeringY;
+                        }
+                        if (postY < 0 + centeringY * 2) {
+                            postY += centeringY;
+                        }
+
+                        target.setX(event.getX() + centeringX);
+                        target.setY(event.getY() + centeringY);
+
+                        if (event.getX() < player.getBoundingBoxRect().right) {
+                            Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.mainmanback);
+                            player.setBitmap(b);
+                        }
+
+                        if (event.getX() > player.getBoundingBoxRect().left) {
+                            Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.mainman);
+                            player.setBitmap(b);
+                        }
+                        player.setVx(moveX / (Math.abs(moveX) + Math.abs(moveY)) * 200);
+                        player.setVy(moveY / (Math.abs(moveX) + Math.abs(moveY)) * 200);
+
+                    }
                 }
-                if(postX < 0+centeringX*2){
-                    postX += centeringX;
-                }
 
-                postY = player.getBoundingBoxRect().top + centeringY + moveY;
-                if(postY > viewWidth-centeringY*2){
-                    postY -= centeringY;
-                }
-                if(postY < 0+centeringY*2){
-                    postY += centeringY;
-                }
-
-                target.setX(event.getX()+centeringX);
-                target.setY(event.getY()+centeringY);
-
-                if(event.getX() < player.getBoundingBoxRect().right){
-                    Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.mainmanback);
-                    player.setBitmap(b);
-                }
-
-                if(event.getX() > player.getBoundingBoxRect().left){
-                    Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.mainman);
-                    player.setBitmap(b);
-                }
-                    player.setVx(moveX / (Math.abs(moveX) + Math.abs(moveY)) * 200);
-                    player.setVy(moveY / (Math.abs(moveX) + Math.abs(moveY)) * 200);
-
+                if(dialog.Close(event)){ button.setDialog(false); }
             }
         }
 

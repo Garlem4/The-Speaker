@@ -19,30 +19,6 @@ public class Background {
     private int height;
 
 
-    public double getX() {
-        return x;
-    }
-    public void setX(double x) {
-        this.x = x;
-    }
-    public double getY() {
-        return y;
-    }
-    public void setY(double y) {
-        this.y = y;
-    }
-    public double getVX() {
-        return VX;
-    }
-    public void setVX(double VX) {
-        this.VX = VX;
-    }
-    public double getVY() {
-        return VY;
-    }
-    public void setVY(double VY) {
-        this.VY = VY;
-    }
 
     public Background(Bitmap bitmap){
         this.bitmap = bitmap;
