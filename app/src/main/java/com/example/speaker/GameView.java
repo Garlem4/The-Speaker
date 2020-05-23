@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -31,6 +30,8 @@ public class GameView extends View{
 
     private float postX = 0;
     private float postY = 0;
+
+    private Bitmap id = BitmapFactory.decodeResource(getResources(), R.drawable.king);
 
     private int tarX;
     private int tarY;
@@ -145,8 +146,15 @@ public class GameView extends View{
                 button.draw(canvas,viewWidth,viewHeight);
             }
         }
+
+        p.setTextSize(30.0f);
+        canvas.drawText("Задание №1: ",viewWidth/4*3-50,viewHeight/8,p);
+        canvas.drawText("Поговорите",viewWidth/4*3-50,viewHeight/8+40,p);
+        canvas.drawText("cо стажником.",viewWidth/4*3-50,viewHeight/8+80,p);
+
+
         if (button.isDialog()){
-            dialog.draw(canvas,viewWidth,viewHeight);
+            dialog.draw(canvas,viewWidth,viewHeight,id,this.getContext());
         }
     }
 
@@ -213,6 +221,7 @@ public class GameView extends View{
             if(unit.toSpeak(player)){
                 unit.setSpeak(true);
                 button.setIt(true);
+                id = unit.getBitmap();
             }
         }
         for(NPC unit: npc.getListNPC()){

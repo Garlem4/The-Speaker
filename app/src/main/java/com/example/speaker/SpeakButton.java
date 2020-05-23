@@ -16,11 +16,7 @@ public class SpeakButton {
 
     public void setDialog(boolean dialog) { this.dialog = dialog; }
 
-    public boolean isIt() { return isIt; }
-
     public void setIt(boolean it) { isIt = it; }
-
-
 
 
     public void draw(Canvas canvas, int viewWidth, int viewHeight){

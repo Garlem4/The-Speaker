@@ -17,7 +17,7 @@ public class CloseDialogButton {
     public void draw(Canvas canvas, int viewWidth){
         Paint p = new Paint();
         p.setTextSize(100.0f);
-        p.setColor(Color.BLACK);
+        p.setColor(Color.DKGRAY);
         but = new Rect(viewWidth-150,100,viewWidth-50,200);
         canvas.drawRect(but,p);
         p.setColor(Color.WHITE);

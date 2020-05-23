@@ -51,8 +51,8 @@ public class Sprite {
         this.frameTime = 50;
         this.currentFrame = 0;
 
-        this.frameWidth = initialFrame.width();
-        this.frameHeight = initialFrame.height();
+        this.frameWidth = initialFrame.width()/2;
+        this.frameHeight = initialFrame.height()/2;
 
         this.padding = 20;
     }
@@ -81,16 +81,9 @@ public class Sprite {
         return frameWidth;
     }
 
-    public void setFrameWidth(int frameWidth) {
-        this.frameWidth = frameWidth;
-    }
 
     public int getFrameHeight() {
         return frameHeight;
-    }
-
-    public void setFrameHeight(int frameHeight) {
-        this.frameHeight = frameHeight;
     }
 
     public double getVx() {
@@ -109,38 +102,9 @@ public class Sprite {
         this.velocityY = velocityY;
     }
 
-    public int getCurrentFrame() {
-        return currentFrame;
-    }
-
-    public void setCurrentFrame(int currentFrame) {
-        this.currentFrame = currentFrame%frames.size();
-    }
-
-    public double getFrameTime() {
-        return frameTime;
-    }
-
-    public void setFrameTime(double frameTime) {
-        this.frameTime = Math.abs(frameTime);;
-    }
-
-    public double getTimeForCurrentFrame() {
-        return timeForCurrentFrame;
-    }
-
-    public void setTimeForCurrentFrame(double timeForCurrentFrame) {
-        this.timeForCurrentFrame = Math.abs(timeForCurrentFrame);
-    }
-
     public void addFrame (Rect frame) {
         frames.add(frame);
     }
-
-    public int getFramesCount () {
-        return frames.size();
-    }
-
 
     public void update (int ms) {
         timeForCurrentFrame += ms;

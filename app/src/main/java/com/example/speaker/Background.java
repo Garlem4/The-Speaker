@@ -28,14 +28,6 @@ public class Background {
         this.VY = 0;
     }
 
-    public Bitmap getBitmap() {
-        return bitmap;
-    }
-
-    public void setBitmap(Bitmap bitmap) {
-        this.bitmap = bitmap;
-    }
-
     public void draw (Canvas canvas, int width, int height) {
         Paint p = new Paint();
         this.width = width;
